@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#CFE2F3"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="110dp"
+        android:layout_height="47dp"
+        android:background="#6FA8DC"
         android:text="Start Alarm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,79 +19,67 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/hours"
+        android:id="@+id/hour"
         android:layout_width="75dp"
         android:layout_height="75dp"
+        android:layout_marginEnd="16dp"
         android:ems="10"
         android:gravity="center"
         android:hint="00"
         android:inputType="number"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".5" />
+        app:layout_constraintBottom_toBottomOf="@+id/colon"
+        app:layout_constraintEnd_toStartOf="@+id/colon"
+        app:layout_constraintTop_toTopOf="@+id/colon"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/colon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
         android:gravity="center"
         android:text=":"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toStartOf="@+id/minutes"
-        app:layout_constraintHorizontal_bias=".5"
-        app:layout_constraintStart_toEndOf="@+id/hours"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".5" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/minutes"
+        android:id="@+id/minute"
         android:layout_width="75dp"
         android:layout_height="75dp"
+        android:layout_marginStart="16dp"
         android:ems="10"
         android:gravity="center"
         android:hint="00"
         android:inputType="number"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".5" />
+        app:layout_constraintBottom_toBottomOf="@+id/colon"
+        app:layout_constraintStart_toEndOf="@+id/colon"
+        app:layout_constraintTop_toTopOf="@+id/colon"
+        app:layout_constraintVertical_bias="0.5" />
 
-    <TextView
-        android:id="@+id/colon2"
+    <Button
+        android:id="@+id/test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text=":"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toStartOf="@+id/seconds"
-        app:layout_constraintHorizontal_bias=".5"
-        app:layout_constraintStart_toEndOf="@+id/minutes"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".5" />
-
-    <EditText
-        android:id="@+id/seconds"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="00"
-        android:inputType="number"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        android:layout_marginTop="50dp"
+        android:text="Test Alarm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".5" />
+        app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <Switch
+        android:id="@+id/AM_PM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="AM "
+        app:layout_constraintEnd_toEndOf="@+id/minute"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/hour"
+        app:layout_constraintTop_toBottomOf="@+id/colon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

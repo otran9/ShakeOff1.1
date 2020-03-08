@@ -51,7 +51,6 @@ public class AlarmActivity extends AppCompatActivity {
             public void onClick(View view) {
                 r.stop();
                 finish();
-                //startActivity(main);
             }
         });
 
@@ -76,7 +75,6 @@ public class AlarmActivity extends AppCompatActivity {
             if (mAccel > 30) {
                 r.stop();
                 finish();
-                //startActivity(main);
                 //Toast.makeText(getApplicationContext(), "Shake event detected", Toast.LENGTH_SHORT).show();
 
             }

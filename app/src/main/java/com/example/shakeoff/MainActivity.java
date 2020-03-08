@@ -1,27 +1,18 @@
 package com.example.shakeoff;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.app.Notification.Builder;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.content.Intent;
 import android.os.Bundle;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.widget.Toast;
-import java.util.Objects;
 
 /*
 COMPONENTS
@@ -33,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     int hours, minutes, seconds, time;
     EditText hrText, minText, secText;
     Button button;
+    Button testAlarm;
+    Switch AM_PM;
     Timer alarm;
     boolean timerSet;
 
@@ -45,11 +38,16 @@ public class MainActivity extends AppCompatActivity {
         minutes = 0;
         seconds = 0;
         time = 0;
-        hrText = findViewById(R.id.hours);
-        minText = findViewById(R.id.minutes);
-        secText = findViewById(R.id.seconds);
+        hrText = findViewById(R.id.hour);
+        minText = findViewById(R.id.minute);
         button = findViewById(R.id.button);
+        testAlarm = findViewById(R.id.test);
+        AM_PM = findViewById(R.id.AM_PM);
         timerSet = false;
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(System.currentTimeMillis());
+
+        cal.clear();
 
         hrText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -60,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.length() == 0) {
-                    //hrText.setText("00");
                     hours = 0;
                     return;
                 }
@@ -97,30 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        secText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length() == 0) {
-                    seconds = 0;
-                    return;
-                }
-                seconds = Integer.parseInt(charSequence.toString());
-                if (seconds > 59) {
-                    seconds = 0;
-                }
-                updateTime();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
 
         button.setOnClickListener(new View.OnClickListener() {
             Intent alarmIntent = new Intent(getApplicationContext(), AlarmActivity.class);
@@ -134,13 +107,27 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(alarmIntent);
                     }
                 }, time);
-                //startActivity(alarmIntent);
+            }
+        });
+
+        testAlarm.setOnClickListener(new View.OnClickListener() {
+            Intent alarmIntent = new Intent(getApplicationContext(), AlarmActivity.class);
+
+            @Override
+            public void onClick(View view) {
+                alarm = new Timer();
+                alarm.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        startActivity(alarmIntent);
+                    }
+                }, 5000);
             }
         });
     }
 
     void updateTime() {
-        time = (3600000 * hours) + (60000 * minutes) + (1000 * seconds);
+        time = (3600000 * hours) + (60000 * minutes);
     }
     /*
      */
