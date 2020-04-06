@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private Button testAlarm;
     private Switch AM_PM;
     private String AM_PM_String = " AM";
-    private Timer alarm;
     private Intent alarmIntent, alarmServiceIntent;
     public PendingIntent alarmPendingIntent;
     private boolean alarmSet, isPM, isBound;
@@ -232,15 +231,6 @@ public class MainActivity extends AppCompatActivity {
                 if (isTime(tempCal, alarmTime)) {
                     startActivity(alarmIntent);
                 }
-                /*
-                alarm = new Timer();
-                alarm.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        startActivity(alarmIntent);
-                    }
-                }, 5000);
-                */
             }
         });
 
@@ -271,22 +261,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         handler.post(runnable);
-
-        /*
-        Toast.makeText(getApplicationContext(), "isTime: " + isTime(currentTime, alarmTime), Toast.LENGTH_SHORT).show();
-        while(!isTime(currentTime, alarmTime)) {
-            try {
-                updateAlarmTime();
-                if (isTime(currentTime, alarmTime)) {
-                    startActivity(alarmIntent);
-                }
-                //Toast.makeText(getApplicationContext(), "while", Toast.LENGTH_SHORT).show();
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-
-            }
-        }
-         */
     }
 
     // Check if the current time matches the alarm time
@@ -310,25 +284,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        Toast.makeText(getApplicationContext(), "isTime() " + matchTime, Toast.LENGTH_SHORT).show();
          */
-        //Toast.makeText(getApplicationContext(), "isTime() " + matchTime, Toast.LENGTH_SHORT).show();
         return matchTime;
     }
 
     void startAlarm() {
-        /*
-        while(!isTime(currentTime, alarmTime)) {
-            try {
-                if (isTime(currentTime, alarmTime)) {
-                    startActivity(alarmIntent);
-                }
-                Toast.makeText(getApplicationContext(), "while", Toast.LENGTH_SHORT).show();
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
 
-            }
-        }
-         */
     }
 
     void updateAlarmTime() {
@@ -369,7 +331,4 @@ public class MainActivity extends AppCompatActivity {
             isBound = false;
         }
     }
-
-    /*
-     */
 }
