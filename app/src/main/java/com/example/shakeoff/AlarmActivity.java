@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class AlarmActivity extends AppCompatActivity {
     Button dismissButton;
-    Intent main;
+    Intent main, i;
 
     private SensorManager mSensorManager;
     private float mAccel;
@@ -38,8 +38,11 @@ public class AlarmActivity extends AppCompatActivity {
         notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         r = RingtoneManager.getRingtone(getApplicationContext(), notification);
         main = new Intent(getApplicationContext(), MainActivity.class);
+
+        i = new Intent(getApplicationContext(), RingtoneService.class);
+        getApplicationContext().startService(i);
         try {
-            r.play();
+            // r.play();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,7 +52,9 @@ public class AlarmActivity extends AppCompatActivity {
         dismissButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                r.stop();
+                // i = new Intent(getApplicationContext(), RingtoneService.class);
+                stopService(i);
+                // r.stop();
                 finish();
             }
         });
@@ -73,9 +78,10 @@ public class AlarmActivity extends AppCompatActivity {
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta;
             if (mAccel > 30) {
-                r.stop();
+                // r.stop();
+                stopService(i);
                 finish();
-                //Toast.makeText(getApplicationContext(), "Shake event detected", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getApplicationContext(), "Shake event detected", Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -95,5 +101,12 @@ public class AlarmActivity extends AppCompatActivity {
     protected void onPause() {
         mSensorManager.unregisterListener(mSensorListener);
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        stopService(i);
+        finish();
+        super.onStop();
     }
 }

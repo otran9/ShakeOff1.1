@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Future;
 
 /*
 COMPONENTS
@@ -98,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         alarmTime = Calendar.getInstance();
         updateAlarmTime();
         /*
-
         yearText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     hour = 12;
                     hrText.setText("12");
                 }
-                alarmSet = false;
+                // alarmSet = false;
             }
             @Override
             public void afterTextChanged(Editable editable) { }
@@ -197,22 +197,45 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) { }
         });
 
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                currentTime = Calendar.getInstance();
+                if (isTime(currentTime, alarmTime)) {
+                    handler.removeCallbacks(this);
+                    startActivity(alarmIntent);
+                } else {
+                    handler.postDelayed(this, 5000);
+                }
+                /*
+                String timeStr = "(" + currentTime.get(Calendar.HOUR_OF_DAY)
+                        + ") " + currentTime.get(Calendar.HOUR) + ":"
+                        + currentTime.get(Calendar.MINUTE)
+                        + "\n(" + alarmTime.get(Calendar.HOUR_OF_DAY)
+                        + ") " + alarmTime.get(Calendar.HOUR) + ":"
+                        + alarmTime.get(Calendar.MINUTE);
+                Toast.makeText(getApplicationContext(), timeStr, Toast.LENGTH_SHORT).show();
+                 */
+            }
+        };
+        // handler.post(runnable);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!alarmSet) {
-                    updateAlarmTime();
-                    String message = "Current time ("
-                            + currentTime.get(Calendar.HOUR_OF_DAY) + ") "
-                            + currentTime.get(Calendar.HOUR) + ":"
-                            + currentTime.get(Calendar.MINUTE)
-                            + "\nAlarm set for ("
-                            + alarmTime.get(Calendar.HOUR_OF_DAY) + ") "
-                            + alarmTime.get(Calendar.HOUR) + ":"
-                            + alarmTime.get(Calendar.MINUTE) + AM_PM_String;
-                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                    alarmSet = true;
-                }
+                updateAlarmTime();
+                handler.removeCallbacks(runnable);
+                handler.postDelayed(runnable, 5000);
+                String message = "Current time ("
+                        + currentTime.get(Calendar.HOUR_OF_DAY) + ") "
+                        + currentTime.get(Calendar.HOUR) + ":"
+                        + currentTime.get(Calendar.MINUTE)
+                        + "\nAlarm set for ("
+                        + alarmTime.get(Calendar.HOUR_OF_DAY) + ") "
+                        + alarmTime.get(Calendar.HOUR) + ":"
+                        + alarmTime.get(Calendar.MINUTE) + AM_PM_String;
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -241,26 +264,6 @@ public class MainActivity extends AppCompatActivity {
                 + ") " + alarmTime.get(Calendar.HOUR) + ":"
                 + alarmTime.get(Calendar.MINUTE);
         Toast.makeText(getApplicationContext(), timeStr, Toast.LENGTH_SHORT).show();
-
-        handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (isTime(currentTime, alarmTime)) {
-                    startActivity(alarmIntent);
-                }
-                handler.postDelayed(runnable, 5000);
-                currentTime = Calendar.getInstance();
-                String timeStr = "(" + currentTime.get(Calendar.HOUR_OF_DAY)
-                        + ") " + currentTime.get(Calendar.HOUR) + ":"
-                        + currentTime.get(Calendar.MINUTE)
-                        + "\n(" + alarmTime.get(Calendar.HOUR_OF_DAY)
-                        + ") " + alarmTime.get(Calendar.HOUR) + ":"
-                        + alarmTime.get(Calendar.MINUTE);
-                Toast.makeText(getApplicationContext(), timeStr, Toast.LENGTH_SHORT).show();
-            }
-        };
-        handler.post(runnable);
     }
 
     // Check if the current time matches the alarm time
@@ -294,10 +297,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void updateAlarmTime() {
-        if (isPM) {
-            setHour = hour + 12;
-        } else if (!isPM) {
-            setHour = hour;
+        currentTime = Calendar.getInstance();
+        if (isPM) { // PM
+            if (setHour == 12) {
+                setHour = hour; // Set 12 to 12
+            } else {
+                setHour = hour + 12;
+            }
+        } else if (!isPM) { // AM
+            if (setHour == 12) {
+                setHour = 0; // Set 12 to 0
+            } else {
+                setHour = hour;
+            }
         }
         alarmTime.set(Calendar.HOUR, hour);
         alarmTime.set(Calendar.HOUR_OF_DAY, setHour);
